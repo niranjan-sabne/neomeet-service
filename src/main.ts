@@ -1,4 +1,8 @@
-import { VersioningType } from '@nestjs/common';
+import {
+  ValidationPipe,
+  VersioningType,
+  VERSION_NEUTRAL,
+} from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app/app.module';
@@ -14,9 +18,12 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
+
   app.enableVersioning({
     type: VersioningType.URI,
-    prefix: 'v1',
+    defaultVersion: ['1'],
+    prefix: 'api/v',
   });
 
   await app.listen(6969);
