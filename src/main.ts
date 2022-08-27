@@ -26,6 +26,8 @@ async function bootstrap() {
     prefix: 'api/v',
   });
 
-  await app.listen(6969);
+  app.enableCors();
+
+  await app.listen(process.env.PORT || 6969);
 }
 bootstrap();
